@@ -1,6 +1,12 @@
 const generateHTML=require('./develop/generateHTML')
 const inquirer=require('inquirer');
 const fs=require('fs');
+const Manager=require('./develop/lib/Manager')
+const Engineer=require('./develop/lib/Engineer')
+const Intern=require('./develop/lib/Intern')
+
+
+const employeeArray=[];
 
 const getManagerInfo=()=>{
     return inquirer.prompt([
@@ -26,10 +32,13 @@ const getManagerInfo=()=>{
 
         } 
     ])
-    .then(data=>{
-        let managerData=(data.name,data.id,data.email,data.office)
-        console.log(managerData);
+    .then(managerData=>{
+        const {name,id,email,office}=managerData;
+        const manager=new Manager(name,id,email,office);
 
+        employeeArray.push(manager);
+        console.log(employeeArray);
+        addEmployee();
     })
 }
 
@@ -79,8 +88,18 @@ const getEngineer=()=>{
         message: "What is the engineer's github username?"
     },
 ])
- 
+.then(engineerData=>{
+    const {name,id,email,github}=engineerData;
+    const engineer=new Engineer(name,id,email,github);
+
+    employeeArray.push(engineer);
+    console.log(employeeArray);
+    addEmployee();
+    
+})
 }
+
+
 
 const getIntern=()=>{
     return inquirer.prompt([
@@ -106,8 +125,17 @@ const getIntern=()=>{
         }
      
 ])
+.then(internData=>{
+    const {name,id,email,school}=internData;
+    const intern=new Intern(name,id,email,school);
 
+    employeeArray.push(intern);
+    console.log(employeeArray);
+    addEmployee();
+    
+})
 };
+
         
 function writeToFile(fileName, data){
     fs.writeFile(fileName,data,err =>{
@@ -116,7 +144,7 @@ function writeToFile(fileName, data){
 }
 
 getManagerInfo()
-    .then(addEmployee)
+// (addEmployee)
     // .then(data=>{
     //     const teamInfo=generateHTML(data);
     //     writeToFile('./dist/team.html', teamInfo);
