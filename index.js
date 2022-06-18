@@ -1,123 +1,123 @@
+const generateHTML=require('./develop/generateHTML')
 const inquirer=require('inquirer');
+const fs=require('fs');
 
 const getManagerInfo=()=>{
     return inquirer.prompt([
         {
-            type: 'text',
-            name: 'managerName',
-            message: 'What is the manager name?',
+            type: 'input',
+            name: 'name',
+            message: "What is the manager's name?",
         },
         {
-            type: 'text',
-            name: 'managerID',
-            message: 'What is the manager ID number?',
+            type: 'input',
+            name: 'id',
+            message: "What is the manager's ID number?",
         },
         {
-            type: 'text',
-            name: 'managerEmail',
-            message: 'What is the manager email address?',
+            type: 'input',
+            name: 'email',
+            message: "What is the manager's email address?",
         },
         {    
-            type: 'text',
-            name: 'managerOffice',
-            message: 'What is the manager office number?',
+            type: 'input',
+            name: 'office',
+            message: "What is the manager's office number?",
 
-        }        
+        } 
     ])
-    .then((data)=>{
-        console.log(data);
-        addEmployee();
+    .then(data=>{
+        let managerData=(data.name,data.id,data.email,data.office)
+        console.log(managerData);
+
     })
 }
-    const addEmployee=()=>{
-        return inquirer.prompt({
-        type: 'list',
-        name: 'addEmployee',
-        message: 'Would you like to add another employee?',
-        choices:['Yes', 'No'],
-        })
-    
-    .then((data)=>{
-        if (data.addEmployee === 'Yes'){
-            getEmployeeInfo();
-        } else{
-            generateHTML();
-        }
-    }
-    )};   
 
-const getEmployeeInfo=()=>{
-    return inquirer.prompt([
+const addEmployee=()=>{
+    return inquirer.prompt([        
         {
             type: 'list',
             name: 'role',
-            message: 'Is this employee an intern or an engineer?',
-            choices: ['Intern', 'Engineer'],
-        },
+            message: 'Would you like to add an Engineer or Intern?',
+            choices:['Engineer', 'Intern', 'No, create team page.']
+        }
+    ])
+   
+    .then((data)=>{
+        if(data.role==='Engineer'){
+            console.log('engineer running')
+            getEngineer();
+        } else if(data.role==='Intern'){
+            console.log('intern running')
+            getIntern();
+        } else {
+            writeToFile();
+        }
+        })
+    };
+const getEngineer=()=>{
+    
+    return  inquirer.prompt([
+    {
+        type:'input',
+        name:'name',
+        message: "What is the engineer's name?"
+    },
+    {
+        type:'input',
+        name:'id',
+        message:"What is the engineer's ID number?"
+    },
+    {
+        type:'input',
+        name:'email',
+        message:"What is the engineer's email?"
+    }, 
+    {
+        type: 'input',
+        name:'github',
+        message: "What is the engineer's github username?"
+    },
+])
+ 
+}
+
+const getIntern=()=>{
+    return inquirer.prompt([
         {
-            type: 'text',
+            type: 'input',
             name: 'name',
-            message: 'What is the employee name?',
+            message: "What is the intern's name?",
         },
         {
-            type:'text',
+            type:'input',
             name: 'id',
-            message: 'What is the employee ID number?',
+            message: "What is the intern's ID number?",
         },
         {    
-            type: 'text',
+            type: 'input',
             name: 'email',
-            message: 'What is the employee email address?',
-        }    
+            message: "What is the intern's email address?",
+        },
+        {
+            type: 'input',
+            name: 'school',
+            message: "What school does the intern attend?"
+        }
      
 ])
 
-
-    .then((data)=>{
-    if(data.role==='Engineer'){
-        inquirer
-            .prompt({
-                type: 'text',
-                name:'github',
-                message: 'What is the employee github username?'
-            },
-            {
-                type: 'list',
-                name: 'addAnother',
-                message: 'Would you like to add another employee?',
-                choices: ['Yes','No']
-            })
-            .then((data)=>{
-                if(data.addAnother==='Yes'){
-                    getEmployeeInfo();
-                } else {
-                    generateHTML();
-                }
-            })
-    } else {
-        inquirer
-            .prompt({
-                type: 'text',
-                name:'school',
-                message:'What is the name of employee school?'
-            },
-            {
-                type: 'list',
-                name:'addAnother',
-                message: 'Would you like to add another employee?'
-            })
-            .then((data)=>{
-                if(data.addAnother==='Yes'){
-                    getEmployeeInfo();
-                }else{
-                    generateHTML();
-                }
-            }
-            )
-
-    };
- })
 };
+        
+function writeToFile(fileName, data){
+    fs.writeFile(fileName,data,err =>{
+        err ? console.error(err) : console.log("Your HTML file has been created")
+    });
+}
 
-
-getManagerInfo();
+getManagerInfo()
+    .then(addEmployee)
+    // .then(data=>{
+    //     const teamInfo=generateHTML(data);
+    //     writeToFile('./dist/team.html', teamInfo);
+    // });
