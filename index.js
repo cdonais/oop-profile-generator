@@ -1,4 +1,4 @@
-const generateHTML=require('./develop/generateHTML')
+const generateHTML=require('./develop/src/generateHTML')
 const inquirer=require('inquirer');
 const fs=require('fs');
 const Manager=require('./develop/lib/Manager')
@@ -33,12 +33,13 @@ const getManagerInfo=()=>{
         } 
     ])
     .then(managerData=>{
-        const {name,id,email,office}=managerData;
+        let {name,id,email,office}=managerData;
         const manager=new Manager(name,id,email,office);
 
         employeeArray.push(manager);
         console.log(employeeArray);
-        addEmployee();
+        return employeeArray;
+
     })
 }
 
@@ -54,13 +55,14 @@ const addEmployee=()=>{
    
     .then((data)=>{
         if(data.role==='Engineer'){
-            console.log('engineer running')
             getEngineer();
         } else if(data.role==='Intern'){
-            console.log('intern running')
             getIntern();
         } else {
-            writeToFile();
+            const htmlContent=generateHTML(employeeArray[0])
+            console.log(htmlContent);
+            writeFile('./develop/dist/team.html', htmlContent);
+    
         }
         })
     };
@@ -89,12 +91,14 @@ const getEngineer=()=>{
     },
 ])
 .then(engineerData=>{
-    const {name,id,email,github}=engineerData;
+    let {name,id,email,github}=engineerData;
     const engineer=new Engineer(name,id,email,github);
 
     employeeArray.push(engineer);
     console.log(employeeArray);
     addEmployee();
+    return employeeArray;
+
     
 })
 }
@@ -126,26 +130,23 @@ const getIntern=()=>{
      
 ])
 .then(internData=>{
-    const {name,id,email,school}=internData;
+    let {name,id,email,school}=internData;
     const intern=new Intern(name,id,email,school);
 
     employeeArray.push(intern);
     console.log(employeeArray);
     addEmployee();
-    
+    return employeeArray;
+
 })
 };
 
         
-function writeToFile(fileName, data){
-    fs.writeFile(fileName,data,err =>{
+function writeFile(fileName, data){
+    fs.writeFile(fileName,data, err =>{
         err ? console.error(err) : console.log("Your HTML file has been created")
     });
 }
 
 getManagerInfo()
-// (addEmployee)
-    // .then(data=>{
-    //     const teamInfo=generateHTML(data);
-    //     writeToFile('./dist/team.html', teamInfo);
-    // });
+.then(addEmployee)
