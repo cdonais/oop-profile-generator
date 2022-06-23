@@ -1,24 +1,7 @@
 
-const generateHTML=()=>{
-
-    return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Team Profile</title>
-    </head>
-    <body>
-        <header>    
-            <h1>My Team</h1>
-        </header>    
-    </body> 
-</html>           
-    `;
-};
 const generateManager=(manager)=>{
     return `
-    <div id=manager class=card>
+    <div id="manager" class="card">
             <h2>${manager.name}</h2>
             <h3>Manager<h3>
             ${manager.id}
@@ -47,7 +30,49 @@ const generateIntern=(intern)=>{
     ${intern.school}
     `;
 };
-generateManager();
-generateEngineer();
-generateIntern();
+generateHTML=(employeeArray)=>{
+    teamArray=[];
+
+    for(let i=0; i<employeeArray.length;i++){
+        const employee=employeeArray[i];
+
+        if(employee.role==='Manager'){
+            const managerCard=generateManager(employee);
+            teamArray.push(managerCard);
+        }
+        if(employee.role==='Engineer'){
+            const engineerCard=generateEngineer(employee);
+            teamArray.push(engineerCard);
+        }
+        if(employee.role==='Intern'){
+            const internCard=generateIntern(employee);
+            teamArray.push(internCard);
+        }
+
+    }
+    const teamCards=teamArray.join('')
+    const generateTeam=generatePage(teamCards);
+    return generateTeam;
+}
+const generatePage=teamCards=>{
+
+    return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Team Profile</title>
+    </head>
+    <body>
+        <header>    
+            <h1>My Team</h1>
+        </header>
+        <div id="team-cards">
+            ${teamCards}
+        </div>        
+    </body> 
+</html>           
+    `;
+};
+
 module.exports=generateHTML;

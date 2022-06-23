@@ -59,7 +59,7 @@ const addEmployee=()=>{
         } else if(data.role==='Intern'){
             getIntern();
         } else {
-            const htmlContent=generateHTML(employeeArray[0])
+            const htmlContent=generateHTML(employeeArray)
             console.log(htmlContent);
             writeFile('./develop/dist/team.html', htmlContent);
     
