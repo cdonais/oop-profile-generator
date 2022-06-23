@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+*{
+    background-color: cornflowerblue;
+}
+h1 {
+    font-family: 'permanent marker', cursive;
+    text-align: center;
+    font-size: 60px;
+    padding: 15px;
+    background-color: whitesmoke;
+    border: 5px solid rgb(225, 219, 45)
+}
+h2 {
+    font-family: 'permanent marker', cursive;
+    font-size: 36px;
+    background-color: whitesmoke;
+    border-bottom: 5px solid rgb(225, 219, 45);
+}
+h3{
+    font-family: 'permanent marker', cursive;
+    font-size: 28px;
+    background-color: whitesmoke;
+}
+
+p{
+    font-family: 'open sans',sans-serif;
+    font-size: 20px;
+    background-color: whitesmoke;
+    font-style: italic;
+}
+#team-cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between
+}
+.card{
+    padding: 20px;
+    background-color: whitesmoke;
+    border: 5px solid rgb(225, 219, 45);
+    border-radius: 10%;
+}
+i{
+    background-color: whitesmoke;
+    padding-left:10px;
+    color: rgb(225, 219, 45);
+}
+a{
+    background-color: whitesmoke;
+}
